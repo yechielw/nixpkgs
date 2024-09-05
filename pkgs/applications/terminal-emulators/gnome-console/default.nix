@@ -6,6 +6,7 @@
 , libgtop
 , gtk4
 , libadwaita
+, pango
 , pcre2
 , vte-gtk4
 , desktop-file-utils
@@ -38,6 +39,7 @@ stdenv.mkDerivation rec {
     libgtop
     gtk4
     libadwaita
+    pango
     pcre2
     vte-gtk4
   ];
