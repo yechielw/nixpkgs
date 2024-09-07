@@ -9,6 +9,7 @@
   docbook-xsl-nons,
   gettext,
   desktop-file-utils,
+  wayland-scanner,
   wrapGAppsHook4,
   gtk4,
   libadwaita,
@@ -73,6 +74,7 @@ stdenv.mkDerivation (finalAttrs: {
     pkg-config
     gi-docgen
     docbook-xsl-nons
+    wayland-scanner
     wrapGAppsHook4
   ];
 
