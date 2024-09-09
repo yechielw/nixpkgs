@@ -183,6 +183,7 @@ stdenv.mkDerivation (finalAttrs: {
   propagatedBuildInputs = [ zlib libffi gettext libiconv ];
 
   mesonFlags = [
+    "-Dglib_debug=disabled" # https://gitlab.gnome.org/GNOME/glib/-/issues/3421#note_2206315
     "-Ddocumentation=true" # gvariant specification can be built without gi-docgen
     (lib.mesonEnable "dtrace" withDtrace)
     (lib.mesonEnable "systemtap" withDtrace) # requires dtrace option to be enabled
