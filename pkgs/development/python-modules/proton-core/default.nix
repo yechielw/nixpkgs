@@ -25,7 +25,7 @@ buildPythonPackage rec {
     hash = "sha256-IiKmtgcCSe2q3qaNuUSaC/D/vSQzVq7w8VN2Xq81+tQ=";
   };
 
-  nativeBuildInputs = [ setuptools ];
+  build-system = [ setuptools ];
 
   propagatedBuildInputs = [
     bcrypt
@@ -37,7 +37,7 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "proton" ];
 
-  nativeCheckInputs = [
+  dependencies = [
     pytestCheckHook
     pytest-cov-stub
     pyotp
