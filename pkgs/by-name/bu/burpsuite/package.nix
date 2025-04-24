@@ -9,20 +9,20 @@
 }:
 
 let
-  version = "2025.2.3";
+  version = "2025.3.3";
 
   product =
     if proEdition then
       {
         productName = "pro";
         productDesktop = "Burp Suite Professional Edition";
-        hash = "sha256-eVtqlZHW1w10tUKlqdwFSbx2kJW5hEtfyq7MuBsNS4Q=";
+        hash = "sha256-IFw38ypviGNkM8c0YqK5Qq0L+PjX59ZQNWVYVcUV36M=";
       }
     else
       {
         productName = "community";
         productDesktop = "Burp Suite Community Edition";
-        hash = "sha256-XWAaNAdPVxKS7/9uYWpAdbzHt+xNqpKCIOH7dVcUyaI=";
+        hash = "sha256-lSjpnGuayuWhcKARFkpRWDe9o7K1ZHLWzrBtIdPK/88=";
       };
 
   src = fetchurl {
@@ -109,7 +109,6 @@ buildFHSEnv {
     hydraPlatforms = [ ];
     maintainers = with maintainers; [
       bennofs
-      blackzeshi
       fab
     ];
     mainProgram = "burpsuite";
