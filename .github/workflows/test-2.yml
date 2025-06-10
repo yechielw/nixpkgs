@@ -1,0 +1,56 @@
+name: "Auto-update burpsuite"
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+
+jobs:
+  update:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        persist-credentials: true
+
+    - name: Install Nix
+      uses: cachix/install-nix-action@v31
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+
+    - name: Run update script
+      run: |
+        nix-shell maintainers/scripts/update.nix \
+          --argstr path burpsuite \
+          --argstr skip-prompt true
+
+    - name: Determine version bump
+      id: version
+      run: |
+        old=$(git diff HEAD -- pkgs/by-name/bu/burpsuite/package.nix \
+          | grep '^-.*version' \
+          | head -n1 \
+          | sed -E 's/^-.*version = "([^"]+)".*/\1/')
+        new=$(git diff HEAD -- pkgs/by-name/bu/burpsuite/package.nix \
+          | grep '^\+.*version' \
+          | head -n1 \
+          | sed -E 's/^\+.*version = "([^"]+)".*/\1/')
+        echo "OLD_VERSION=$old" >> $GITHUB_ENV
+        echo "NEW_VERSION=$new" >> $GITHUB_ENV
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: "auto-update-burpsuite-${{ env.NEW_VERSION }}"
+        base: testing
+        commit-message: "burpsuite: ${{ env.OLD_VERSION }} -> ${{ env.NEW_VERSION }}"
+        title: "Auto-update burpsuite to ${{ env.NEW_VERSION }}"
+        body: |
+          Updates burpsuite from ${{ env.OLD_VERSION }} to ${{ env.NEW_VERSION }}.
+        paths: |
+          pkgs/by-name/bu/burpsuite/package.nix
+
